@@ -1,0 +1,16 @@
+pages = App.ActiveDocument.findObjects('TechDraw::DrawPage')
+
+print(f'===================== ****************** =====================')
+for page in pages:
+	print(f'===================== {page.Name}/{page.Label} =====================')
+	print(f'Modified: {"Yes" if page.State[-1] == "Touched" else "No"}')
+	print(f'KeepUpdated: {page.KeepUpdated}')
+	print(f'Visibility: {page.ViewObject.Visibility}')
+	for view in page.Views:
+		print(f'===================== {view.Name}/{view.Label} =====================')
+		print(f'\tModified: {"Yes" if view.State[-1] == "Touched" else "No"}')
+		print(f'\tCoarse View: {view.CoarseView}')
+		print(f'\tLock Position: {view.LockPosition}')
+		print(f'\tScale/Type: {view.Scale}/{view.ScaleType}')
+		print(f'\tVisibility: {view.ViewObject.Visibility}')
+		print(f'\tArc Center Marks: {view.ViewObject.ArcCenterMarks}')

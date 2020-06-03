@@ -1,0 +1,12 @@
+fixedItems = []
+
+for item in App.ActiveDocument.Objects:
+	try:
+		if item.objectType == 'a2pPart' and item.fixedPosition:
+			print(f'Label: {item.Label}\tFixed: Yes')
+			fixedItems.append(item)
+	except AttributeError as e:
+		None
+
+if len(fixedItems) == 0:
+	print('NO a2pPart has fixed position')

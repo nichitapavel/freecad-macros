@@ -1,0 +1,26 @@
+pages = App.ActiveDocument.findObjects('TechDraw::DrawPage')
+
+for page in pages:
+	print(f'==============================================================')
+	print(f'================== {page.Name}/{page.Label} ==================')
+	page.KeepUpdated = False
+	page.ViewObject.Visibility = False
+	page.Template.ViewObject.Visibility = False
+
+	print(f'Page KeepUpdated: {page.KeepUpdated}')
+	print(f'Page Visibility: {page.ViewObject.Visibility}')
+	print(f'Template Visibility: {page.Template.ViewObject.Visibility}')
+
+	for view in page.Views:
+		print(f'****************** {view.Name}/{view.Label} ******************')
+		view.CoarseView = True
+		view.ViewObject.Visibility = False
+		view.ViewObject.ArcCenterMarks = False  # NOT exactly low quality related
+		view.LockPosition = True  # NOT exactly low quality related
+		print(f'View CoarseView: {view.CoarseView}')
+		print(f'View Visibility: {view.ViewObject.Visibility}')
+		print(f'View ArcCentersMark: {view.ViewObject.ArcCenterMarks}')
+		print(f'View LockPosition: {view.LockPosition}')
+
+
+App.ActiveDocument.recompute()

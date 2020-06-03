@@ -1,0 +1,18 @@
+pages = App.ActiveDocument.findObjects('TechDraw::DrawPage')
+
+for page in pages:
+	print(f'==============================================================')
+	print(f'================== {page.Name}/{page.Label} ==================')
+	page.KeepUpdated = False
+
+	print(f'Page KeepUpdated: {page.KeepUpdated}')
+
+	for view in page.Views:
+		print(f'****************** {view.Name}/{view.Label} ******************')
+		view.CoarseView = True
+		view.LockPosition = True  # NOT exactly low quality related
+		print(f'View CoarseView: {view.CoarseView}')
+		print(f'View LockPosition: {view.LockPosition}')
+
+
+App.ActiveDocument.recompute()

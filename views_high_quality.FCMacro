@@ -1,0 +1,3 @@
+for view in App.ActiveDocument.Page.Views:
+	view.CoarseView = False
+	print(f'{view.Name}/{view.Label}\tCoarseView: {view.CoarseView}')

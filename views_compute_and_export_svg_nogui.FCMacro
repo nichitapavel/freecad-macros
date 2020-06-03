@@ -1,0 +1,76 @@
+import TechDraw
+
+
+def getPages():
+	pages = App.ActiveDocument.findObjects('TechDraw::DrawPage')
+	return pages
+
+
+def getViews():
+	views = []
+	for object in App.ActiveDocument.Objects:
+		try:
+			if object.TypeId == 'TechDraw::DrawPage':
+				views.extend(object.Views)
+		except AttributeError as e:
+			None
+	return views
+
+
+def rearangePagesViews(pages):
+	for page in pages:
+		if len(page.Views) > 1:
+			print(f'{page.Name}/{page.Label}')
+			for view in page.Views[1:]:
+				new_page = App.ActiveDocument.addObject("TechDraw::DrawPage")
+				template = App.activeDocument().addObject('TechDraw::DrawSVGTemplate')
+				template.Template = 'C:/Program Files/FreeCAD 0.18/data/Mod/TechDraw/Templates/A4_Landscape_blank.svg'
+				new_page.Template = template
+				new_page.addView(view)
+				new_page.KeepUpdated = False
+				page.removeView(view)
+
+
+def exportSVG(view, file):
+	s = TechDraw.viewPartAsSvg(view)
+	head = '<svg\n' + \
+	       '	xmlns="http://www.w3.org/2000/svg" version="1.1" \n' + \
+	       '	xmlns:freecad="http://www.freecadweb.org/wiki/index.php?title=Svg_Namespace">\n'
+	tail = '\n</svg>'
+	svgFile = open(file, "w")
+	svgFile.write(head)
+	svgFile.write(s)
+	svgFile.write(tail)
+	svgFile.close()
+
+
+pages = getPages()
+path = App.ActiveDocument.FileName.rsplit('/', 1)[0]
+
+for page in pages:
+	view = page.Views[0]
+
+	view.CoarseView = False
+	page.KeepUpdated = True
+	print(f'{view.Name}/{view.Label}\tCoarseView: {view.CoarseView}')
+
+	view.recompute()
+	view.enforceRecompute()
+	page.recompute()
+	page.enforceRecompute()
+	App.ActiveDocument.recompute()
+
+	exportSVG(view, f'{path}/{App.ActiveDocument.Label}-{view.Label}.svg')
+
+
+	view.CoarseView = True
+	page.KeepUpdated = False
+	print(f'{view.Name}/{view.Label}\tCoarseView: {view.CoarseView}')
+
+	view.recompute()
+	view.enforceRecompute()
+	page.recompute()
+	page.enforceRecompute()
+	App.ActiveDocument.recompute()
+
+App.ActiveDocument.recompute()

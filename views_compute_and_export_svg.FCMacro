@@ -1,0 +1,71 @@
+import TechDraw
+import TechDrawGui
+
+def getPages():
+	pages = App.ActiveDocument.findObjects('TechDraw::DrawPage')
+	return pages
+
+
+def getViews():
+	views = []
+	for object in App.ActiveDocument.Objects:
+		try:
+			if object.TypeId == 'TechDraw::DrawPage':
+				views.extend(object.Views)
+		except AttributeError as e:
+			None
+	return views
+
+
+def rearangePagesViews(pages):
+	for page in pages:
+		if len(page.Views) > 1:
+			print(f'{page.Name}/{page.Label}')
+			for view in page.Views[1:]:
+				new_page = App.ActiveDocument.addObject("TechDraw::DrawPage")
+				template = App.activeDocument().addObject('TechDraw::DrawSVGTemplate')
+				template.Template = 'C:/Program Files/FreeCAD 0.18/data/Mod/TechDraw/Templates/A4_Landscape_blank.svg'
+				new_page.Template = template
+				new_page.addView(view)
+				new_page.KeepUpdated = False
+				page.removeView(view)
+
+
+pages = getPages()
+path = App.ActiveDocument.FileName.rsplit('/', 1)[0]
+
+for page in pages:
+	view = page.Views[0]
+
+	view.CoarseView = False
+	view.ViewObject.Visibility = True
+	page.ViewObject.Visibility = True
+	page.KeepUpdated = True
+	print(f'{view.Name}/{view.Label}\tCoarseView: {view.CoarseView}')
+
+	view.recompute()
+	view.enforceRecompute()
+	view.ViewObject.update()
+	page.recompute()
+	page.enforceRecompute()
+	page.ViewObject.update
+	App.ActiveDocument.recompute()
+
+	TechDrawGui.exportPageAsSvg(page, f'{path}/{App.ActiveDocument.Label}-{view.Label}.svg')
+
+
+	view.CoarseView = True
+	view.ViewObject.Visibility = False
+	page.ViewObject.Visibility = False
+	page.KeepUpdated = False
+	print(f'{view.Name}/{view.Label}\tCoarseView: {view.CoarseView}')
+
+	view.recompute()
+	view.enforceRecompute()
+	view.ViewObject.update()
+	page.recompute()
+	page.enforceRecompute()
+	page.ViewObject.update
+	App.ActiveDocument.recompute()
+
+App.ActiveDocument.recompute()

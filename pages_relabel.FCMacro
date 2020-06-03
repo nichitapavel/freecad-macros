@@ -1,0 +1,9 @@
+pages = App.ActiveDocument.findObjects('TechDraw::DrawPage')
+
+i = 0
+for page in pages:
+	i += 1
+	page.Label = f'Page{i:03}'
+	page.Template.Label = f'Template{i:03}'
+	if len(page.Views) == 1:
+		page.Views[0].Label = f'View{i:03}'
