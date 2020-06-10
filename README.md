@@ -1,11 +1,12 @@
 # freecad-macros
 Personal freecad-macros
 
-Macros path:
+Macros default path:
 - Windows: `C:\Users\<user>\AppData\Roaming\FreeCAD\Macro\`
 - Linux: `/home/<user>/.FreeCAD/Macro/`
 
-**Note:** is possible that _Macro_ folder does not exists.
+**Note 1:** is possible that _Macro_ folder does not exists.
+**Note 2:** is possible the default path is without `Macro` at the end.
 
 Linking (linux commands)
 ========================
