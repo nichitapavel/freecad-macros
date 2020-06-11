@@ -41,6 +41,18 @@ for page in pages:
 	view.ViewObject.Visibility = True
 	page.ViewObject.Visibility = True
 	page.KeepUpdated = True
+
+	ExtraWidth = view.ViewObject.ExtraWidth
+	HiddenWidth = view.ViewObject.HiddenWidth
+	IsoWidth = view.ViewObject.IsoWidth
+	LineWidth = view.ViewObject.LineWidth
+
+	view.ViewObject.ExtraWidth = 0
+	view.ViewObject.HiddenWidth = 0
+	view.ViewObject.IsoWidth = 0
+	view.ViewObject.LineWidth = 0.4
+
+	print(f'{view.Name}/{view.Label}\tLineWidth: {view.ViewObject.LineWidth}')
 	print(f'{view.Name}/{view.Label}\tCoarseView: {view.CoarseView}')
 
 	view.recompute()
@@ -58,6 +70,13 @@ for page in pages:
 	view.ViewObject.Visibility = False
 	page.ViewObject.Visibility = False
 	page.KeepUpdated = False
+
+	view.ViewObject.ExtraWidth = ExtraWidth
+	view.ViewObject.HiddenWidth = HiddenWidth
+	view.ViewObject.IsoWidth = IsoWidth
+	view.ViewObject.LineWidth = LineWidth
+
+	print(f'{view.Name}/{view.Label}\tLineWidth: {view.ViewObject.LineWidth}')
 	print(f'{view.Name}/{view.Label}\tCoarseView: {view.CoarseView}')
 
 	view.recompute()
